@@ -10,7 +10,7 @@ ENV PORT=80
 
 # For Docker layer caching do this BEFORE copying in rest of app
 #COPY src/package*.json ./
-COPY  
+COPY note.txt ./
 #RUN npm install --production --silent
 
 # NPM is done, now copy in the rest of the project to the workdir
