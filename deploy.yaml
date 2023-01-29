@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
       - name: app2container
-        image: "romankachur/node.js.image:laest"
+        image: "romankachur/node.js.image:latest"
         resources:
           limits:
             cpu: "350m"
