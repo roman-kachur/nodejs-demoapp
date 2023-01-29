@@ -14,7 +14,7 @@ spec:
   selector:
     matchLabels:
       app: app1
-  replicas: 2
+  replicas: 4
   template:
     metadata:
       labels:
@@ -22,7 +22,85 @@ spec:
     spec:
       containers:
       - name: app1container
-        image: "romankachur/node.js.image:43"
+        image: "romankachur/node.js.image:latest"
+        resources:
+          limits:
+            cpu: "350m"
+            memory: "128Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app2
+  namespace: stage
+spec:
+  selector:
+    matchLabels:
+      app: app2
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: app2
+    spec:
+      containers:
+      - name: app2container
+        image: "romankachur/node.js.image:laest"
+        resources:
+          limits:
+            cpu: "350m"
+            memory: "128Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app3
+  namespace: stage
+spec:
+  selector:
+    matchLabels:
+      app: app3
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: app3
+    spec:
+      containers:
+      - name: app1container
+        image: "romankachur/node.js.image:latest"
+        resources:
+          limits:
+            cpu: "350m"
+            memory: "128Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app4
+  namespace: stage
+spec:
+  selector:
+    matchLabels:
+      app: app4
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: app4
+    spec:
+      containers:
+      - name: app1container
+        image: "romankachur/node.js.image:latest"
         resources:
           limits:
             cpu: "350m"
@@ -42,6 +120,54 @@ spec:
   type: ClusterIP
   selector:
     app: app1
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app2-service
+  namespace: stage
+  labels:
+    app: svc-2
+spec:
+  type: ClusterIP
+  selector:
+    app: app2
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app3-service
+  namespace: stage
+  labels:
+    app: svc-3
+spec:
+  type: ClusterIP
+  selector:
+    app: app3
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app4-service
+  namespace: stage
+  labels:
+    app: svc-4
+spec:
+  type: ClusterIP
+  selector:
+    app: app4
   ports:
   - port: 80
     targetPort: 80
@@ -67,21 +193,33 @@ spec:
                 name: app1-service
                 port: 
                   number: 80
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    - host: app2.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: app2-service
+                port: 
+                  number: 80
+    - host: app3.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: app3-service
+                port: 
+                  number: 80
+    - host: app4.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: app4-service
+                port: 
+                  number: 80
