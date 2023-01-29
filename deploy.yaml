@@ -73,7 +73,7 @@ spec:
         app: app3
     spec:
       containers:
-      - name: app1container
+      - name: app3container
         image: "romankachur/node.js.image:latest"
         resources:
           limits:
@@ -99,7 +99,7 @@ spec:
         app: app4
     spec:
       containers:
-      - name: app1container
+      - name: app4container
         image: "romankachur/node.js.image:latest"
         resources:
           limits:
