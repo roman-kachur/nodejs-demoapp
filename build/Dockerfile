@@ -21,6 +21,7 @@ COPY src/. .
 
 COPY nginx.conf /etc/nginx/
 COPY start.sh ./
+RUN chmod a+x start.sh
 
 # Port 80 for our nginx proxy 
 EXPOSE 80
